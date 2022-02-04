@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Информация о курсах</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="./lib/jquery-3.6.0.min.js"></script>
@@ -41,7 +41,8 @@ and open the template in the editor.
                                         $('#tbl_data').append('<tr>'
                                                 + '<td>' + jsn[i].id + '</td>'
                                                 + '<td>' + jsn[i].shortname + '</td>'
-                                                + '<td>' + jsn[i].fullname + '</td>'
+                                                + '<td><a target="_blank" href="https://study.edu.tele-med.ai/course/view.php?id=' + jsn[i].id + '">'
+                                                + jsn[i].fullname + '</a></td>'
                                                 + '</tr>');
                                     }
                                 } else {
@@ -57,15 +58,20 @@ and open the template in the editor.
             }
             );
         </script>
+        <style type="text/css">
+            #course_id{
+                width: 70px;
+            }
+            #shortname{
+                max-width: 250px;
+            }
+        </style>
     </head>
     <body>
         <div id="data_out">
             <table id="tbl_data" class="table table-striped">
                 <thead>
-                    <tr>
-                        <th>id</th>
-                        <th>Краткое название курса</th>
-                        <th>Полное название курса</th>
+                    <tr><th id="course_id">id</th><th id="shortname">Краткое название курса</th><th>Полное название курса</th>
                     </tr>
                 </thead>
                 <tbody id="tbl_data"></tbody>
