@@ -9,8 +9,47 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <<script src="./lib/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var domainname = 'https://study.edu.tele-med.ai';
+                var token = 'e34754ef2e1ce0df4c8ca95f96f040cf';
+                var functionname = 'core_course_get_courses';
+                var serverurl = domainname + '/webservice/rest/server.php';
+                var data = {
+                    wstoken: token,
+                    wsfunction: functionname,
+                    moodlewsrestformat: 'json',
+                    //id: 73 //Retrieve results based on course Id 2
+                }
+                var response = $.ajax(
+                        {type: 'GET',
+                            data: data,
+                            dataType: "json", // тип загружаемых данных
+                            url: serverurl,
+                            success: function (data, textStatus) {
+                                var jsn = data;
+                                if (typeof jsn.errorcode !== undefined) {
+                                    //$('#data_out').html(JSON.stringify(jsn[1]));
+                                    var N = jsn.length;
+                                    for (i = 0; N > i; i++) {
+                                        $('#data_out').append(jsn[i].id + ' ' + jsn[i].shortname + ' ' + jsn[i].fullname + '<hr />');
+                                    }
+                                } else {
+                                    $('#data_out').html('<b>' + jsn.exception + '<br />'
+                                            + jsn.errorcode + '<br />'
+                                            + jsn.message + '<br /></b>');
+                                }
+                                console.log(jsn);
+                                console.log(typeof jsn.errorcode);
+                            }
+                        }
+                );
+            }
+            );
+        </script>
     </head>
     <body>
-        <div>TODO write content</div>
+        <div id="data_out"> </div>
     </body>
 </html>
