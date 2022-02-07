@@ -16,8 +16,6 @@ function getParent(jsonObj, parentID) {
     }
 }
 
-
-
 $(document).ready(function () {
     var domainname = 'https://study.edu.tele-med.ai';
     var token = 'e34754ef2e1ce0df4c8ca95f96f040cf';
@@ -29,7 +27,6 @@ $(document).ready(function () {
         moodlewsrestformat: 'json',
         //id: 73 //Retrieve results based on course Id 2
     }
-
 
     var response = $.ajax(
             {type: 'GET',
@@ -48,7 +45,7 @@ $(document).ready(function () {
                             console.log((0 == jsn[i].coursecount) ? ('–') : (jsn[i].coursecount));
                             $('#tbl_data').append('<tr>'
                                     + '<td>' + jsn[i].id + '</td>'
-                                    + '<td><a target="_blank" href="https://study.edu.tele-med.ai/course/index.php?categoryid=' + jsn[i].id + '">' + jsn[i].name+'</a>' + '</td>'
+                                    + '<td><a target="_blank" href="https://study.edu.tele-med.ai/course/index.php?categoryid=' + jsn[i].id + '">' + jsn[i].name + '</a>' + '</td>'
                                     + '<td>' + ((0 == jsn[i].coursecount) ? ('–') : (jsn[i].coursecount)) + '</td>'
                                     + '<td>' + getParent(jsn, jsn[i].parent) + '</td>'
                                     + '</tr>');
