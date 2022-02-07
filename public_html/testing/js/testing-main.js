@@ -6,12 +6,12 @@
 
 function getParent(jsonObj, parentID) {
     if (0 == parentID) {
-        return 'Нет родительской категории';
+        return '–';
     }
     var M = jsonObj.length;
     for (ii = 0; M > ii; ii++) {
-        if (jsonObj.id == parentID) {
-            return jsonObj.parent;
+        if (jsonObj[ii].id == parentID) {
+            return jsonObj[ii].name;
         }
     }
 }
@@ -45,9 +45,11 @@ $(document).ready(function () {
                         //$('#data_out').append('<table id="tbl_data" class="table table-striped"><t></table>')
                         var N = jsn.length;
                         for (i = 0; N > i; i++) {
+                            console.log((0 == jsn[i].coursecount) ? ('–') : (jsn[i].coursecount));
                             $('#tbl_data').append('<tr>'
                                     + '<td>' + jsn[i].id + '</td>'
-                                    + '<td>' + jsn[i].name + '</td>'
+                                    + '<td><a target="_blank" href="https://study.edu.tele-med.ai/course/index.php?categoryid=' + jsn[i].id + '">' + jsn[i].name+'</a>' + '</td>'
+                                    + '<td>' + ((0 == jsn[i].coursecount) ? ('–') : (jsn[i].coursecount)) + '</td>'
                                     + '<td>' + getParent(jsn, jsn[i].parent) + '</td>'
                                     + '</tr>');
                         }
