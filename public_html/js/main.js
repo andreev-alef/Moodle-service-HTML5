@@ -1,4 +1,4 @@
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -16,8 +16,6 @@ $(document).ready(function () {
                     moodlewsrestformat: 'json',
                     //id: 73 //Retrieve results based on course Id 2
                 }
-
-
                 var response = $.ajax(
                         {type: 'GET',
                             data: data,
