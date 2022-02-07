@@ -16,12 +16,41 @@ function getParent(jsonObj, parentID) {
     }
 }
 
+function save2WebDB(jsn) {
+    if (typeof jsn.errorcode !== undefined) {
+        var db;
+        var version = '1';
+        var dbName = 'mdl_categories';
+        var dbDisplayName = 'Категории';
+        var dbSize = 5 * 1024 * 1024;
+        db = openDatabase(dbName, version, dbDisplayName, dbSize, function (database)
+        {
+            console.log("database creation callback");
+        });
+        db.transaction(function (t) {
+            t.executeSql("CREATE TABLE cats (id INTEGER PRIMARY KEY, name TEXT, courseCount INTEGER, parentCat INTEGER)", [], null, null);
+        }, function () {
+            
+        });
+
+        var N = jsn.length;
+        for (i = 0; N > i; i++) {
+            $('#tbl_data').append('<tr>'
+                    + '<td>' + jsn[i].id + '</td>'
+                    + '<td><a target="_blank" href="https://study.edu.tele-med.ai/course/index.php?categoryid=' + jsn[i].id + '">' + jsn[i].name + '</a>' + '</td>'
+                    + '<td>' + ((0 == jsn[i].coursecount) ? (' ') : (jsn[i].coursecount)) + '</td>'
+                    + '<td>' + getParent(jsn, jsn[i].parent) + '</td>'
+                    + '</tr>');
+        }
+    }
+}
+
 function getDataFromMoodle(jsonData) {
     //var jsn = jsonData;
     if (typeof jsonData.errorcode !== undefined) {
         var N = jsonData.length;
         for (i = 0; N > i; i++) {
-            console.log((0 == jsonData[i].coursecount) ? ('–') : (jsonData[i].coursecount));
+            //console.log((0 == jsonData[i].coursecount) ? ('–') : (jsonData[i].coursecount));
             $('#tbl_data').append('<tr>'
                     + '<td>' + jsonData[i].id + '</td>'
                     + '<td><a target="_blank" href="https://study.edu.tele-med.ai/course/index.php?categoryid=' + jsonData[i].id + '">' + jsonData[i].name + '</a>' + '</td>'
@@ -53,6 +82,7 @@ $(document).ready(function () {
             //var jsn = data;
             console.log(data);
             getDataFromMoodle(data);
+            save2WebDB(data);
         }
     });
 });
