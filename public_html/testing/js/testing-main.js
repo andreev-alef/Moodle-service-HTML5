@@ -4,6 +4,19 @@
  * and open the template in the editor.
  */
 
+function getParent(jsonObj, parentID) {
+    if (0 == parentID) {
+        return 'Нет родительской категории';
+    }
+    var M = jsonObj.length;
+    for (ii = 0; M > ii; ii++) {
+        if (jsonObj.id == parentID) {
+            return jsonObj.parent;
+        }
+    }
+}
+
+
 
 $(document).ready(function () {
     var domainname = 'https://study.edu.tele-med.ai';
@@ -35,7 +48,7 @@ $(document).ready(function () {
                             $('#tbl_data').append('<tr>'
                                     + '<td>' + jsn[i].id + '</td>'
                                     + '<td>' + jsn[i].name + '</td>'
-                                    + '<td>' + jsn[i].parent + '</td>'
+                                    + '<td>' + getParent(jsn, jsn[i].parent) + '</td>'
                                     + '</tr>');
                         }
                     }
