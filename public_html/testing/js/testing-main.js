@@ -29,19 +29,23 @@ function save2WebDB(jsn) {
         });
         db.transaction(function (t) {
             t.executeSql("CREATE TABLE cats (id INTEGER PRIMARY KEY, name TEXT, courseCount INTEGER, parentCat INTEGER)", [], null, null);
-        }, function () {
-            
+            var N = jsn.length;
+            for (i = 0; N > i; i++) {
+                t.executeSql('INSERT INTO foo (id, name, courseCount, parentCat) VALUES (?, ?, ?, ?)',
+                        [jsn[i].id, jsn[i].name, jsn[i].coursecount, jsn[i].parent]);
+            }
+            t.executeSql('SELECT * FROM cats ORDER BY id', [], function (t, result) {
+                let M = result.rows.lenght;
+                console.log(result.rows.lenght);
+            });
+        });
+        db.transaction(function (t) {
+            t.executeSql('SELECT * FROM cats ORDER BY id', [], function (t, result) {
+                let M = result.rows.lenght;
+//                console.log(result.rows.lenght);
+            });
         });
 
-        var N = jsn.length;
-        for (i = 0; N > i; i++) {
-            $('#tbl_data').append('<tr>'
-                    + '<td>' + jsn[i].id + '</td>'
-                    + '<td><a target="_blank" href="https://study.edu.tele-med.ai/course/index.php?categoryid=' + jsn[i].id + '">' + jsn[i].name + '</a>' + '</td>'
-                    + '<td>' + ((0 == jsn[i].coursecount) ? (' ') : (jsn[i].coursecount)) + '</td>'
-                    + '<td>' + getParent(jsn, jsn[i].parent) + '</td>'
-                    + '</tr>');
-        }
     }
 }
 
