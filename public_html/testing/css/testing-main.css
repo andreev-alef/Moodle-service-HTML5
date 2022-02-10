@@ -19,3 +19,11 @@ and open the template in the editor.
     width: 100%;
     overflow-y: scroll !important;
 }
+
+.sort{
+    color: blue;
+    font-size: 20pt
+}
+.sort:hover{
+    cursor: pointer;
+}
