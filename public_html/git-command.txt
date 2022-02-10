@@ -1,1 +1,1 @@
-git add -A & git commit -m "Асинхронные запросы к moodle" & git push
+git add -A & git commit -m "Эксперименты с WebSQL" & git push
