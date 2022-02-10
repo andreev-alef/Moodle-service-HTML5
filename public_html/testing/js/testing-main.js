@@ -7,11 +7,12 @@
 function getParent(jsonObj, parentID) {
     if (0 == parentID) {
         return ' ';
-    }
-    var M = jsonObj.length;
-    for (ii = 0; M > ii; ii++) {
-        if (jsonObj[ii].id == parentID) {
-            return jsonObj[ii].name;
+    } else {
+        var M = jsonObj.length;
+        for (ii = 0; M > ii; ii++) {
+            if (jsonObj[ii].id == parentID) {
+                return jsonObj[ii].name;
+            }
         }
     }
 }
