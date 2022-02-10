@@ -112,4 +112,16 @@ $(document).ready(function () {
     $('#sort-id-desc').click(function () {
         selectFrom('id', 'desc');
     });
+    $('#sort-name-asc').click(function () {
+        selectFrom('name', 'asc');
+    });
+    $('#sort-name-desc').click(function () {
+        selectFrom('name', 'desc');
+    });
+    $('#sort-courses_count-asc').click(function () {
+        selectFrom('courseCount', 'asc');
+    });
+    $('#sort-courses_count-desc').click(function () {
+        selectFrom('courseCount', 'desc');
+    });
 });
