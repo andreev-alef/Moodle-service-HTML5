@@ -17,8 +17,8 @@ function getParent(jsonObj, parentID) {
     }
 }
 
-function save2WebDB(jsn) {
-    if (typeof jsn.errorcode !== undefined) {
+function getDB(jsonData) {
+    if (typeof jsonData.errorcode !== undefined) {
         var db;
         var version = '1';
         var dbName = 'mdl_categories';
@@ -28,33 +28,49 @@ function save2WebDB(jsn) {
         {
             console.log("database creation callback");
         });
-        db.transaction(function (t) {
-            t.executeSql("CREATE TABLE IF NOT EXISTS cats (id INTEGER PRIMARY KEY, name TEXT, courseCount INTEGER, parentCat INTEGER)", [], null, null);
-        });
-        db.transaction(function (t) {
-            var N = jsn.length;
-            for (i = 0; N > i; i++) {
-                t.executeSql('INSERT INTO cats (id, name, courseCount, parentCat) VALUES (?, ?, ?, ?)',
-                        [jsn[i].id, jsn[i].name, jsn[i].coursecount, jsn[i].parent]);
-            }
-        }, function (t, sqlError) {
-            //console.log(sqlError);
-        });
-
-        db.transaction(function (t) {
-            t.executeSql('SELECT * FROM cats ORDER BY courseCount ASC', [], function (t, result) {
-                console.log(result.rows.length);
-                console.log(result.rows[0].id);
-                getDataFromMoodle(result.rows);
-            });
-        });
-
+        return db;
     }
 }
 
-function getDataFromMoodle(jsonData) {
+function selectFrom(fieldName, orderDirection) {
+    db.transaction(function (t) {
+        let sqlString = 'SELECT * FROM cats ORDER BY ' + fieldName + ' ' + orderDirection;
+        t.executeSql(sqlString, [], function (t, result) {
+            console.log(result.rows.length);
+            console.log(result.rows[0].id);
+            getData(result.rows);
+        });
+    });
+}
+
+function save2WebDB(jsn) {
+//        if (typeof jsn.errorcode !== undefined) {
+//            var db;
+//            var version = '1';
+//            var dbName = 'mdl_categories';
+//            var dbDisplayName = 'Категории';
+//            var dbSize = 5 * 1024 * 1024;
+    db = getDB(jsn);
+    db.transaction(function (t) {
+        t.executeSql("CREATE TABLE IF NOT EXISTS cats (id INTEGER PRIMARY KEY, name TEXT, courseCount INTEGER, parentCat INTEGER)", [], null, null);
+    });
+    db.transaction(function (t) {
+        let N = jsn.length;
+        for (i = 0; N > i; i++) {
+            t.executeSql('INSERT INTO cats (id, name, courseCount, parentCat) VALUES (?, ?, ?, ?)',
+                    [jsn[i].id, jsn[i].name, jsn[i].coursecount, jsn[i].parent]);
+        }
+    }, function (t, sqlError) {
+        //console.log(sqlError);
+    });
+    selectFrom('id', 'asc');
+}
+
+
+function getData(jsonData) {
     //var jsn = jsonData;
     //if (typeof jsonData.errorcode !== undefined) {
+    $('#tbl_data').empty();
     var N = jsonData.length;
     for (i = 0; N > i; i++) {
         //console.log((0 == jsonData[i].coursecount) ? ('–') : (jsonData[i].coursecount));
@@ -89,5 +105,11 @@ $(document).ready(function () {
             var jsn = data;
             save2WebDB(data);
         }
+    });
+    $('#sort-id-asc').click(function () {
+        selectFrom('id', 'asc');
+    });
+    $('#sort-id-desc').click(function () {
+        selectFrom('id', 'desc');
     });
 });
