@@ -28,22 +28,23 @@ function save2WebDB(jsn) {
             console.log("database creation callback");
         });
         db.transaction(function (t) {
-            t.executeSql("CREATE TABLE cats (id INTEGER PRIMARY KEY, name TEXT, courseCount INTEGER, parentCat INTEGER)", [], null, null);
-            var N = jsn.length;
-            console.log(N);
-            for (i = 0; N > i; i++) {
-                t.executeSql('INSERT INTO foo (id, name, courseCount, parentCat) VALUES (?, ?, ?, ?)',
-                        [jsn[i].id, jsn[i].name, jsn[i].coursecount, jsn[i].parent]);
-            }
-            t.executeSql('SELECT * FROM cats ORDER BY id', [], function (t, result) {
-                let M = result.rows.lenght;
-                console.log(result.rows.length);
-                console.log(M);
-            });
+            t.executeSql("CREATE TABLE IF NOT EXISTS cats (id INTEGER PRIMARY KEY, name TEXT, courseCount INTEGER, parentCat INTEGER)", [], null, null);
         });
         db.transaction(function (t) {
-            t.executeSql('SELECT * FROM cats ORDER BY id', [], function (t, result) {
-                console.log(result.rows.lenght);
+            var N = jsn.length;
+            for (i = 0; N > i; i++) {
+                t.executeSql('INSERT INTO cats (id, name, courseCount, parentCat) VALUES (?, ?, ?, ?)',
+                        [jsn[i].id, jsn[i].name, jsn[i].coursecount, jsn[i].parent]);
+            }
+        }, function (t, sqlError) {
+            //console.log(sqlError);
+        });
+
+        db.transaction(function (t) {
+            t.executeSql('SELECT * FROM cats ORDER BY courseCount DESC', [], function (t, result) {
+                console.log(result.rows.length);
+                console.log(result.rows[0].id);
+                getDataFromMoodle(result.rows);
             });
         });
 
@@ -52,18 +53,18 @@ function save2WebDB(jsn) {
 
 function getDataFromMoodle(jsonData) {
     //var jsn = jsonData;
-    if (typeof jsonData.errorcode !== undefined) {
-        var N = jsonData.length;
-        for (i = 0; N > i; i++) {
-            //console.log((0 == jsonData[i].coursecount) ? ('–') : (jsonData[i].coursecount));
-            $('#tbl_data').append('<tr>'
-                    + '<td>' + jsonData[i].id + '</td>'
-                    + '<td><a target="_blank" href="https://study.edu.tele-med.ai/course/index.php?categoryid=' + jsonData[i].id + '">' + jsonData[i].name + '</a>' + '</td>'
-                    + '<td>' + ((0 == jsonData[i].coursecount) ? (' ') : (jsonData[i].coursecount)) + '</td>'
-                    + '<td>' + getParent(jsonData, jsonData[i].parent) + '</td>'
-                    + '</tr>');
-        }
+    //if (typeof jsonData.errorcode !== undefined) {
+    var N = jsonData.length;
+    for (i = 0; N > i; i++) {
+        //console.log((0 == jsonData[i].coursecount) ? ('–') : (jsonData[i].coursecount));
+        $('#tbl_data').append('<tr>'
+                + '<td>' + jsonData[i].id + '</td>'
+                + '<td><a target="_blank" href="https://study.edu.tele-med.ai/course/index.php?categoryid=' + jsonData[i].id + '">' + jsonData[i].name + '</a>' + '</td>'
+                + '<td>' + ((0 == jsonData[i].courseCount) ? (' ') : (jsonData[i].courseCount)) + '</td>'
+                + '<td>' + getParent(jsonData, jsonData[i].parentCat) + '</td>'
+                + '</tr>');
     }
+    //}
     return;
 }
 
@@ -84,9 +85,7 @@ $(document).ready(function () {
         dataType: "json", // тип загружаемых данных
         url: serverurl,
         success: function (data, textStatus) {
-            //var jsn = data;
-            // console.log(data);
-            getDataFromMoodle(data);
+            var jsn = data;
             save2WebDB(data);
         }
     });
