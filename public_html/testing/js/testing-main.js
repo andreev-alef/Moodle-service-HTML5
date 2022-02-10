@@ -42,7 +42,7 @@ function save2WebDB(jsn) {
         });
 
         db.transaction(function (t) {
-            t.executeSql('SELECT * FROM cats ORDER BY courseCount DESC', [], function (t, result) {
+            t.executeSql('SELECT * FROM cats ORDER BY courseCount ASC', [], function (t, result) {
                 console.log(result.rows.length);
                 console.log(result.rows[0].id);
                 getDataFromMoodle(result.rows);
