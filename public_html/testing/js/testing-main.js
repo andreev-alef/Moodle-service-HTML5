@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 
+var sqlCreate = "CREATE TABLE IF NOT EXISTS cats (id INTEGER PRIMARY KEY, name TEXT, courseCount INTEGER, parentCat INTEGER)";
+var sqlInsert = 'INSERT INTO cats (id, name, courseCount, parentCat) VALUES (?, ?, ?, ?)';
+
 function getParent(jsonObj, parentID) {
     if (0 == parentID) {
         return ' ';
@@ -44,21 +47,15 @@ function selectFrom(fieldName, orderDirection) {
 }
 
 function save2WebDB(jsn) {
-//        if (typeof jsn.errorcode !== undefined) {
-//            var db;
-//            var version = '1';
-//            var dbName = 'mdl_categories';
-//            var dbDisplayName = 'Категории';
-//            var dbSize = 5 * 1024 * 1024;
+
     db = getDB(jsn);
     db.transaction(function (t) {
-        t.executeSql("CREATE TABLE IF NOT EXISTS cats (id INTEGER PRIMARY KEY, name TEXT, courseCount INTEGER, parentCat INTEGER)", [], null, null);
+        t.executeSql(sqlCreate, [], null, null);
     });
     db.transaction(function (t) {
         let N = jsn.length;
         for (i = 0; N > i; i++) {
-            t.executeSql('INSERT INTO cats (id, name, courseCount, parentCat) VALUES (?, ?, ?, ?)',
-                    [jsn[i].id, jsn[i].name, jsn[i].coursecount, jsn[i].parent]);
+            t.executeSql(sqlInsert, [jsn[i].id, jsn[i].name, jsn[i].coursecount, jsn[i].parent]);
         }
     }, function (t, sqlError) {
         //console.log(sqlError);
@@ -123,5 +120,11 @@ $(document).ready(function () {
     });
     $('#sort-courses_count-desc').click(function () {
         selectFrom('courseCount', 'desc');
+    });
+    $('#sort-parent-asc').click(function () {
+        selectFrom('parentCat', 'asc');
+    });
+    $('#sort-parent-desc').click(function () {
+        selectFrom('parentCat', 'desc');
     });
 });
