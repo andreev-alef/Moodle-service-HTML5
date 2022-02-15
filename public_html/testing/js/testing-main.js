@@ -46,21 +46,41 @@ function selectFrom(fieldName, orderDirection) {
     });
 }
 
-function save2WebDB(jsn) {
-
-    db = getDB(jsn);
-    db.transaction(function (t) {
-        t.executeSql(sqlCreate, [], null, null);
-    });
-    db.transaction(function (t) {
-        let N = jsn.length;
-        for (i = 0; N > i; i++) {
-            t.executeSql(sqlInsert, [jsn[i].id, jsn[i].name, jsn[i].coursecount, jsn[i].parent]);
+function main() {
+    var domainname = 'https://study.edu.tele-med.ai';
+    var token = 'e34754ef2e1ce0df4c8ca95f96f040cf';
+    var functionname = 'core_course_get_categories';
+    var serverurl = domainname + '/webservice/rest/server.php';
+    var data = {
+        wstoken: token,
+        wsfunction: functionname,
+        moodlewsrestformat: 'json',
+        //id: 73 //Retrieve results based on course Id 2
+    };
+    var response = $.ajax({
+        type: 'GET',
+        data: data,
+        dataType: "json", // тип загружаемых данных
+        url: serverurl,
+        success: function (data, textStatus) {
+            var jsn = data;
+            //save2WebDB(data);
+            db = getDB(jsn);
+            db.transaction(function (t) {
+                t.executeSql(sqlCreate, [], null, null);
+            });
+            db.transaction(function (t) {
+                let N = jsn.length;
+                for (i = 0; N > i; i++) {
+                    t.executeSql(sqlInsert, [jsn[i].id, jsn[i].name, jsn[i].coursecount, jsn[i].parent]);
+                }
+            }, function (t, sqlError) {
+                //console.log(sqlError);
+            });
+            selectFrom('id', 'asc');
         }
-    }, function (t, sqlError) {
-        //console.log(sqlError);
     });
-    selectFrom('id', 'asc');
+
 }
 
 
@@ -83,25 +103,9 @@ function getData(jsonData) {
 }
 
 $(document).ready(function () {
-    var domainname = 'https://study.edu.tele-med.ai';
-    var token = 'e34754ef2e1ce0df4c8ca95f96f040cf';
-    var functionname = 'core_course_get_categories';
-    var serverurl = domainname + '/webservice/rest/server.php';
-    var data = {
-        wstoken: token,
-        wsfunction: functionname,
-        moodlewsrestformat: 'json',
-        //id: 73 //Retrieve results based on course Id 2
-    };
-    var response = $.ajax({
-        type: 'GET',
-        data: data,
-        dataType: "json", // тип загружаемых данных
-        url: serverurl,
-        success: function (data, textStatus) {
-            var jsn = data;
-            save2WebDB(data);
-        }
+    main();
+    $('#update').click(function () {
+        selectFrom('id', 'asc');
     });
     $('#sort-id-asc').click(function () {
         selectFrom('id', 'asc');
