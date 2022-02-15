@@ -9,18 +9,18 @@ and open the template in the editor.
         <title>Информация о категориях</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="../lib/jquery-3.6.0.min.js"></script>
-        <script src="../lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
         <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
         <link href="../lib/bs-icons/bootstrap-icons.css" rel="stylesheet" />
         <link href="./css/testing-main.css" rel="stylesheet" />
+        <script src="../lib/jquery-3.6.0.min.js"></script>
         <script src="./js/testing-main.js"></script>
         <link rel="shortcut icon" href="./ballgreen_7043.ico" />
     </head>
     <body>
         <h1 class="display-6">
             Список всех категорий в системе
-            <span id="update" class="sort bi bi-arrow-repeat"></span>
+            <span id="update" class="sort bi bi-arrow-repeat"  title="Обновить данные" data-bs-toggle="tooltip" data-bs-placement="right"></span>
         </h1>
         <div id="data_out">                            
             <table class="table table-striped">

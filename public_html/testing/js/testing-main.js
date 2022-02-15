@@ -7,6 +7,8 @@
 var sqlCreate = "CREATE TABLE IF NOT EXISTS cats (id INTEGER PRIMARY KEY, name TEXT, courseCount INTEGER, parentCat INTEGER)";
 var sqlInsert = 'INSERT INTO cats (id, name, courseCount, parentCat) VALUES (?, ?, ?, ?)';
 
+
+
 function getParent(jsonObj, parentID) {
     if (0 == parentID) {
         return ' ';
@@ -104,6 +106,10 @@ function getData(jsonData) {
 
 $(document).ready(function () {
     main();
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
     $('#update').click(function () {
         selectFrom('id', 'asc');
     });
