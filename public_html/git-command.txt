@@ -1,1 +1,2 @@
 git add -A & git commit -m "Эксперименты с WebSQL. Асинхронная сортировка по столбцам." & git push
+git add -A & git commit -m "Фиксация стобцов таблицы" & git push

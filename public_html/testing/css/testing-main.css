@@ -7,6 +7,9 @@ and open the template in the editor.
     Created on : 7 февр. 2022 г., 10:45:35
     Author     : a.andreev
 */
+thead{
+    background-color: #FFF; /* !important;*/
+}
 
 #course_id{
     width: 70px;
