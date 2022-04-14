@@ -40,8 +40,8 @@ $(document).ready(function () {
                                             + jsn.errorcode + '<br />'
                                             + jsn.message + '<br /></b>');
                                 }
-                                console.log(jsn);
-                                console.log(typeof jsn.errorcode);
+//                                console.log(jsn);
+//                                console.log(typeof jsn.errorcode);
                             }
                         }
                 );

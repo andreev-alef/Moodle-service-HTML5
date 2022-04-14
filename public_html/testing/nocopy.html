@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .video-wrapper {
+                width: 600px;
+                position: relative;
+            }
+            .video-wrapper video {
+                width: 100%; 
+            }
+            .video-wrapper:before {
+                content: ' ';
+                position: absolute;
+                background-image: url(../img/hello_html_m2fe476f3.png);
+                background-image: url('https://avatars0.githubusercontent.com/u/766193');
+                background-size: cover;
+                width: 100%;
+                height: 100%;
+                /*                right: 20px;
+                                bottom: 20px;*/
+                opacity: .7;
+            }
+        </style>
+    </head>
+    <body >
+        <div class="video-wrapper">
+
+            <video id="my-video-player" width="480" oncontextmenu="return false;" controls="" controlslist="nodownload"><source src="http://127.0.0.1/nbproject/testing/%D0%98%D0%BD%D1%82%D1%80%D0%B0%D0%BA%D1%80%D0%B0%D0%BD%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F+%D0%B3%D0%B8%D0%BF%D0%BE+%D0%B8+%D0%B3%D0%B8%D0%BF%D0%B5%D1%80%D1%82%D0%B5%D0%BD%D0%B7%D0%B8%D1%8F+%5BOtA5NkD5-4I%5D.mp4"></video>
+    </body>
+</html>
